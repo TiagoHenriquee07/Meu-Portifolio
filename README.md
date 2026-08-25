@@ -1,12 +1,13 @@
 # Portfólio — Tiago Oliveira
 
-Portfólio profissional de Tiago Henrique Penteado de Oliveira, estudante de Gestão da Tecnologia da Informação com foco em desenvolvimento Front-end, React, React Native, UI/UX e qualidade de software.
+Portfólio profissional de Tiago Henrique Penteado de Oliveira. O site reúne sua formação em Gestão da Tecnologia da Informação, projetos de desenvolvimento e experiência em operações, planejamento, atendimento e organização de processos.
 
 ## Tecnologias
 
 - ASP.NET Core 10 LTS com Razor Pages
 - HTML semântico, CSS e JavaScript sem dependências de interface externas
 - GitHub Actions e GitHub Pages
+- Imagem pessoal otimizada para carregamento responsivo
 
 ## Executar localmente
 
@@ -51,14 +52,8 @@ Após o deploy deste repositório, o endereço esperado é:
 
 `https://tiagohenriquee07.github.io/Meu-Portifolio/`
 
-## Conteúdo a completar
+## Conteúdo
 
-Antes de usar o portfólio ou currículo em candidaturas, informe:
+As informações profissionais, acadêmicas e os cursos exibidos no site foram conferidos com o currículo fornecido. O PDF definitivo está disponível para visualização e download em `wwwroot/files/curriculo-tiago-oliveira.pdf`.
 
-- instituição, semestre e previsão de conclusão do curso;
-- experiências profissionais, se houver;
-- cursos, certificados e conquistas;
-- demonstrações publicadas dos projetos;
-- um currículo PDF definitivo, caso queira substituir o atual.
-
-Nenhuma experiência ou certificação foi inventada. Os avisos visíveis no site e no currículo deixam os dados ausentes claramente identificados.
+Os projetos apontam para seus repositórios públicos. As demonstrações são identificadas como ainda não publicadas para evitar links ou resultados inexistentes. Quando houver URLs de demonstração, capturas reais ou métricas verificáveis, elas poderão complementar os estudos de caso.
