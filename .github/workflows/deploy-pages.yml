@@ -1,0 +1,95 @@
+name: Publicar portfólio no GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@v6
+
+      - name: Configurar .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.400
+
+      - name: Restaurar dependências
+        run: dotnet restore Meu-Portifolio.sln
+
+      - name: Compilar em Release
+        run: dotnet build Meu-Portifolio.sln --configuration Release --no-restore
+
+      - name: Gerar versão estática com o caminho correto
+        shell: bash
+        run: |
+          repository_name="${GITHUB_REPOSITORY#*/}"
+          owner_name="${GITHUB_REPOSITORY_OWNER,,}"
+
+          if [[ "${repository_name,,}" == "${owner_name}.github.io" ]]; then
+            path_base=""
+          else
+            path_base="/${repository_name}"
+          fi
+
+          site_url="https://${owner_name}.github.io${path_base}/"
+          mkdir -p _site
+
+          DOTNET_ENVIRONMENT=Development \
+          Portfolio__PathBase="${path_base}" \
+          Portfolio__SiteUrl="${site_url}" \
+          dotnet run --project MeuPortifolioWeb/MeuPortifolioWeb.csproj \
+            --configuration Release --no-build --no-launch-profile \
+            --urls http://127.0.0.1:5055 > server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "${server_pid}" 2>/dev/null || true' EXIT
+
+          for attempt in {1..30}; do
+            if curl --fail --silent "http://127.0.0.1:5055${path_base}/" --output _site/index.html; then
+              break
+            fi
+            sleep 1
+          done
+
+          test -s _site/index.html || { cat server.log; exit 1; }
+          cp -a MeuPortifolioWeb/wwwroot/. _site/
+          cp _site/index.html _site/404.html
+          touch _site/.nojekyll
+
+          printf 'User-agent: *\nAllow: /\nSitemap: %ssitemap.xml\n' "${site_url}" > _site/robots.txt
+          printf '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>%s</loc></url></urlset>\n' "${site_url}" > _site/sitemap.xml
+
+          if [[ -n "${path_base}" ]]; then
+            grep -q "${path_base}/css/site.css" _site/index.html
+          fi
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Enviar artefato do site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Publicar
+        id: deployment
+        uses: actions/deploy-pages@v4

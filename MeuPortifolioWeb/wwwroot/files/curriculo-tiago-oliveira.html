@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Currículo — Tiago Henrique Penteado de Oliveira</title>
+  <style>
+    :root { --ink: #14201d; --muted: #58635f; --accent: #237b60; --line: #d8ddd9; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #eceeea; color: var(--ink); font: 14px/1.55 Arial, sans-serif; }
+    main { width: 210mm; min-height: 297mm; margin: 20px auto; padding: 18mm; background: #fff; box-shadow: 0 12px 40px rgba(0,0,0,.12); }
+    header { display: grid; grid-template-columns: 1fr auto; gap: 24px; padding-bottom: 20px; border-bottom: 2px solid var(--ink); }
+    h1 { max-width: 560px; margin: 0; font: 700 31px/1.08 Georgia, serif; letter-spacing: -.5px; }
+    header p { margin: 9px 0 0; color: var(--accent); font-weight: 700; }
+    .contact { text-align: right; font-size: 12px; }
+    .contact a { display: block; color: inherit; text-decoration: none; }
+    section { display: grid; grid-template-columns: 42mm 1fr; gap: 12mm; padding: 18px 0; border-bottom: 1px solid var(--line); }
+    h2 { margin: 0; color: var(--accent); font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; }
+    h3 { margin: 0 0 4px; font-size: 15px; }
+    p { margin: 0; color: var(--muted); }
+    ul { display: flex; flex-wrap: wrap; gap: 5px 15px; margin: 0; padding: 0; list-style: none; color: var(--muted); }
+    li::before { content: "• "; color: var(--accent); }
+    .block + .block { margin-top: 13px; }
+    .note { margin-top: 8px; padding: 7px 9px; background: #f6eee9; color: #74412b; font-size: 11px; }
+    .screen-note { max-width: 210mm; margin: 12px auto; text-align: center; color: #38403d; font-size: 12px; }
+    @page { size: A4; margin: 0; }
+    @media print { body { background: #fff; } main { margin: 0; box-shadow: none; } .screen-note { display: none; } }
+    @media (max-width: 800px) { main { width: 100%; min-height: 0; margin: 0; padding: 24px; } header, section { grid-template-columns: 1fr; } .contact { text-align: left; } }
+  </style>
+</head>
+<body>
+  <p class="screen-note">Versão para impressão. Use Ctrl+P para salvar como PDF.</p>
+  <main>
+    <header>
+      <div>
+        <h1>Tiago Henrique Penteado de Oliveira</h1>
+        <p>Desenvolvimento Front-end · React · React Native · UI/UX</p>
+      </div>
+      <div class="contact">
+        <span>Igaraçu do Tietê, SP</span>
+        <a href="mailto:th05112007@gmail.com">th05112007@gmail.com</a>
+        <a href="https://github.com/TiagoHenriquee07">github.com/TiagoHenriquee07</a>
+        <a href="https://www.linkedin.com/in/tiago-oliveira0808/">linkedin.com/in/tiago-oliveira0808</a>
+      </div>
+    </header>
+
+    <section>
+      <h2>Perfil</h2>
+      <p>Estudante de Gestão da Tecnologia da Informação com interesse em desenvolvimento Front-end, React, React Native, UI/UX e qualidade de software. Busca uma oportunidade na área de tecnologia para contribuir em produtos reais e continuar evoluindo profissionalmente.</p>
+    </section>
+
+    <section>
+      <h2>Formação</h2>
+      <div>
+        <h3>Gestão da Tecnologia da Informação</h3>
+        <p>Curso em andamento.</p>
+        <p class="note">Completar antes de enviar: instituição, semestre atual e previsão de conclusão.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Competências</h2>
+      <div class="block">
+        <h3>Desenvolvimento</h3>
+        <ul><li>HTML5</li><li>CSS3</li><li>JavaScript</li><li>C#</li><li>ASP.NET Core</li><li>MVC e Razor Pages</li><li>APIs REST</li></ul>
+      </div>
+      <div class="block">
+        <h3>Dados, interface e qualidade</h3>
+        <ul><li>MySQL</li><li>SQL</li><li>Responsividade</li><li>UI/UX</li><li>Acessibilidade</li><li>Qualidade de software</li><li>LGPD</li></ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Projetos</h2>
+      <div>
+        <div class="block"><h3>TCine</h3><p>Aplicativo de filmes em React Native e Expo que consome a API do TMDB.</p></div>
+        <div class="block"><h3>Restaurante Barbina</h3><p>Site responsivo com cardápio, reservas, FAQ e navegação mobile.</p></div>
+        <div class="block"><h3>Calendário BarraCred</h3><p>Calendário interativo desenvolvido com JavaScript, CSS e HTML.</p></div>
+        <div class="block"><h3>Portfólio profissional</h3><p>ASP.NET Core Razor Pages com acessibilidade, SEO e deploy automatizado no GitHub Pages.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Experiência e cursos</h2>
+      <div>
+        <p>Projetos acadêmicos e pessoais disponíveis no GitHub.</p>
+        <p class="note">Completar antes de enviar: experiências profissionais, cursos, certificados e conquistas, caso existam.</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

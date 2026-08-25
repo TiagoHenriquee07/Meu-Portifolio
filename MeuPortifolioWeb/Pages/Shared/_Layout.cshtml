@@ -1,63 +1,92 @@
-﻿<!DOCTYPE html>
-<html lang="pt-br">
+@inject IConfiguration Configuration
+@{
+    var pageTitle = ViewData["Title"] as string ?? "Tiago Oliveira | Desenvolvedor Front-end";
+    var description = ViewData["Description"] as string
+        ?? "Portfólio de Tiago Henrique Penteado de Oliveira, estudante de Gestão da Tecnologia da Informação com foco em Front-end, React, React Native e UI/UX.";
+    var configuredSiteUrl = Configuration["Portfolio:SiteUrl"];
+    var siteUrl = string.IsNullOrWhiteSpace(configuredSiteUrl)
+        ? $"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.PathBase}/"
+        : configuredSiteUrl.TrimEnd('/') + "/";
+}
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tiago oliveira - desenvolvedor front-end</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="@description" />
+    <meta name="author" content="Tiago Henrique Penteado de Oliveira" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#10231f" />
+    <meta name="color-scheme" content="light" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content="@pageTitle" />
+    <meta property="og:description" content="@description" />
+    <meta property="og:url" content="@siteUrl" />
+    <meta property="og:site_name" content="Portfólio de Tiago Oliveira" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="@pageTitle" />
+    <meta name="twitter:description" content="@description" />
+    <link rel="canonical" href="@siteUrl" />
+    <link rel="icon" href="~/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>document.documentElement.classList.add('js');</script>
+    <title>@pageTitle</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container-fluid px-4">
-            <a class="navbar-brand fw-bold" href="/">
-                <i class="fas fa-code"></i> Tiago oliveira
-            </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto gap-3">
-                    <li class="nav-item"><a class="nav-link" href="#sobre">sobre</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#projetos">projetos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#skills">skills</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contato">contato</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
-    <main>
+    <header class="site-header" data-header>
+        <div class="shell header-inner">
+            <a class="brand" href="#inicio" aria-label="Ir para o início">
+                <span class="brand-mark" aria-hidden="true">TO</span>
+                <span class="brand-name">Tiago Oliveira</span>
+            </a>
+
+            <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-principal" data-menu-toggle>
+                <span class="sr-only">Abrir menu</span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </button>
+
+            <nav class="main-nav" id="menu-principal" aria-label="Navegação principal" data-menu>
+                <a href="#sobre">Sobre</a>
+                <a href="#projetos">Projetos</a>
+                <a href="#competencias">Competências</a>
+                <a href="#trajetoria">Trajetória</a>
+                <a class="nav-contact" href="#contato">Contato</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="conteudo">
         @RenderBody()
     </main>
 
-    <footer class="footer-section">
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <p class="mb-0">&copy; 2026 Tiago oliveira | desenvolvedor front-end</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <div class="social-links">
-                        <a href="https://www.linkedin.com/in/tiago-oliveira0808/" target="_blank" title="linkedin">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="https://github.com/TiagoHenriquee07" target="_blank" title="github">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="mailto:th05112007@gmail.com" title="email">
-                            <i class="fas fa-envelope"></i>
-                        </a>
-                    </div>
-                </div>
+    <footer class="site-footer">
+        <div class="shell footer-inner">
+            <div>
+                <a class="brand footer-brand" href="#inicio">
+                    <span class="brand-mark" aria-hidden="true">TO</span>
+                    <span class="brand-name">Tiago Oliveira</span>
+                </a>
+                <p>Interfaces claras, acessíveis e pensadas para pessoas.</p>
             </div>
+            <div class="footer-links" aria-label="Links profissionais">
+                <a href="https://github.com/TiagoHenriquee07" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+                <a href="https://www.linkedin.com/in/tiago-oliveira0808/" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span></a>
+                <a href="mailto:th05112007@gmail.com">E-mail <span aria-hidden="true">↗</span></a>
+            </div>
+            <p class="copyright">© @DateTime.Now.Year Tiago Oliveira</p>
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <button class="back-to-top" type="button" aria-label="Voltar ao topo" title="Voltar ao topo" data-back-to-top>
+        <span aria-hidden="true">↑</span>
+    </button>
+
+    <script src="~/js/site.js" asp-append-version="true" defer></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

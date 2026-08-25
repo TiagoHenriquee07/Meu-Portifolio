@@ -1,92 +1,83 @@
-﻿document.addEventListener('DOMContentLoaded', function() {
-    initNavbar();
-    initSmoothScroll();
-    initIntersectionObserver();
-    initScrollAnimations();
-});
+(() => {
+    const header = document.querySelector('[data-header]');
+    const menu = document.querySelector('[data-menu]');
+    const menuToggle = document.querySelector('[data-menu-toggle]');
+    const menuLabel = menuToggle?.querySelector('.sr-only');
+    const backToTop = document.querySelector('[data-back-to-top]');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function initNavbar() {
-    const navbar = document.querySelector('.navbar');
-    const navLinks = document.querySelectorAll('.nav-link');
+    const setMenuState = (isOpen) => {
+        if (!menu || !menuToggle) return;
 
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
+        menu.classList.toggle('is-open', isOpen);
+        header?.classList.toggle('is-open', isOpen);
+        document.body.classList.toggle('menu-open', isOpen);
+        menuToggle.setAttribute('aria-expanded', String(isOpen));
+
+        if (menuLabel) {
+            menuLabel.textContent = isOpen ? 'Fechar menu' : 'Abrir menu';
+        }
+    };
+
+    menuToggle?.addEventListener('click', () => {
+        setMenuState(menuToggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    menu?.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => setMenuState(false));
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            setMenuState(false);
+            menuToggle?.focus();
         }
     });
 
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            const navbarCollapse = document.querySelector('.navbar-collapse');
-            if (navbarCollapse.classList.contains('show')) {
-                const toggler = document.querySelector('.navbar-toggler');
-                toggler.click();
-            }
-        });
-    });
-}
-
-function initSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (href !== '#' && document.querySelector(href)) {
-                e.preventDefault();
-                const target = document.querySelector(href);
-                const offsetTop = target.offsetTop - 80;
-
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-}
-
-function initIntersectionObserver() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+    const updateScrollState = () => {
+        const hasScrolled = window.scrollY > 20;
+        header?.classList.toggle('is-scrolled', hasScrolled);
+        backToTop?.classList.toggle('is-visible', window.scrollY > 650);
     };
 
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate-in');
+    updateScrollState();
+    window.addEventListener('scroll', updateScrollState, { passive: true });
+
+    backToTop?.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+    });
+
+    const revealElements = document.querySelectorAll('[data-reveal]');
+    if (reducedMotion || !('IntersectionObserver' in window)) {
+        revealElements.forEach((element) => element.classList.add('is-visible'));
+    } else {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-visible');
                 observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px' });
 
-    const elementsToObserve = document.querySelectorAll(
-        '.project-card, .skill-category, .info-card, .about-cards, .contact-info'
-    );
+        revealElements.forEach((element) => revealObserver.observe(element));
+    }
 
-    elementsToObserve.forEach(el => {
-        observer.observe(el);
-    });
-}
+    const sections = document.querySelectorAll('main section[id]');
+    const navigationLinks = menu?.querySelectorAll('a[href^="#"]') ?? [];
 
-function initScrollAnimations() {
-    const sections = document.querySelectorAll('section');
-    
-    window.addEventListener('scroll', function() {
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.offsetHeight;
-            const scrollPosition = window.scrollY;
+    if ('IntersectionObserver' in window) {
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
 
-            if (scrollPosition + window.innerHeight > sectionTop + 100) {
-                section.style.opacity = '1';
-            }
-        });
-    });
-}
+                navigationLinks.forEach((link) => {
+                    const isCurrent = link.getAttribute('href') === `#${entry.target.id}`;
+                    if (isCurrent) link.setAttribute('aria-current', 'true');
+                    else link.removeAttribute('aria-current');
+                });
+            });
+        }, { rootMargin: '-25% 0px -65%', threshold: 0 });
 
-console.log('%cportfólio tiago oliveira', 'font-size: 20px; color: #0066cc; font-weight: bold;');
-console.log('%cdesenvolvedor front-end | especialista em segurança digital', 'font-size: 14px; color: #0080ff;');
-console.log('%cgithub: https://github.com/TiagoHenriquee07', 'font-size: 12px; color: #999;');
-console.log('%clinkedin: https://www.linkedin.com/in/tiago-oliveira0808/', 'font-size: 12px; color: #999;');
+        sections.forEach((section) => sectionObserver.observe(section));
+    }
+})();
