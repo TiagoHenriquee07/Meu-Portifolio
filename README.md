@@ -7,7 +7,7 @@ Portfólio profissional de Tiago Henrique Penteado de Oliveira. O site reúne su
 - ASP.NET Core 10 LTS com Razor Pages
 - HTML semântico, CSS e JavaScript sem dependências de interface externas
 - GitHub Actions e GitHub Pages
-- Imagem pessoal otimizada para carregamento responsivo
+- Foto pessoal e capturas reais dos projetos otimizadas para carregamento responsivo
 
 ## Executar localmente
 
@@ -56,4 +56,6 @@ Após o deploy deste repositório, o endereço esperado é:
 
 As informações profissionais, acadêmicas e os cursos exibidos no site foram conferidos com o currículo fornecido. O PDF definitivo está disponível para visualização e download em `wwwroot/files/curriculo-tiago-oliveira.pdf`.
 
-Os projetos apontam para seus repositórios públicos. As demonstrações são identificadas como ainda não publicadas para evitar links ou resultados inexistentes. Quando houver URLs de demonstração, capturas reais ou métricas verificáveis, elas poderão complementar os estudos de caso.
+Os destaques apresentam a Pokédex, o Sistema de Barbearia colaborativo e o TCine. A demonstração da Pokédex foi verificada no GitHub Pages, e sua imagem foi capturada diretamente da interface publicada. O Sistema de Barbearia é apresentado por meio de sua arquitetura MVC porque ainda não está listado entre os repositórios públicos do perfil. O TCine é identificado apenas como código público porque ainda não possui demonstração publicada.
+
+O Restaurante Barbina e o Calendário BarraCred continuam disponíveis no arquivo de projetos, com links para o código e para as demonstrações publicadas.

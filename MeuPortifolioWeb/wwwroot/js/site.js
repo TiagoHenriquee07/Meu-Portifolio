@@ -4,6 +4,7 @@
     const menuToggle = document.querySelector('[data-menu-toggle]');
     const menuLabel = menuToggle?.querySelector('.sr-only');
     const backToTop = document.querySelector('[data-back-to-top]');
+    const scrollProgress = document.querySelector('[data-scroll-progress]');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const setMenuState = (isOpen) => {
@@ -38,6 +39,12 @@
         const hasScrolled = window.scrollY > 20;
         header?.classList.toggle('is-scrolled', hasScrolled);
         backToTop?.classList.toggle('is-visible', window.scrollY > 650);
+
+        if (scrollProgress) {
+            const availableScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = availableScroll > 0 ? Math.min(window.scrollY / availableScroll, 1) : 0;
+            scrollProgress.style.transform = `scaleX(${progress})`;
+        }
     };
 
     updateScrollState();
@@ -79,5 +86,50 @@
         }, { rootMargin: '-25% 0px -65%', threshold: 0 });
 
         sections.forEach((section) => sectionObserver.observe(section));
+    }
+
+    const timelineItems = document.querySelectorAll('.timeline details');
+    timelineItems.forEach((item) => {
+        item.addEventListener('toggle', () => {
+            if (!item.open) return;
+            timelineItems.forEach((otherItem) => {
+                if (otherItem !== item) otherItem.open = false;
+            });
+        });
+    });
+
+    const filterButtons = document.querySelectorAll('[data-repo-filter]');
+    const repositoryCards = document.querySelectorAll('[data-repo-card]');
+    const emptyRepositoryMessage = document.querySelector('[data-empty-repos]');
+
+    filterButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            const selectedFilter = button.dataset.repoFilter;
+            let visibleCount = 0;
+
+            filterButtons.forEach((filterButton) => {
+                const isActive = filterButton === button;
+                filterButton.classList.toggle('is-active', isActive);
+                filterButton.setAttribute('aria-pressed', String(isActive));
+            });
+
+            repositoryCards.forEach((card) => {
+                const categories = card.dataset.category?.split(' ') ?? [];
+                const isVisible = selectedFilter === 'all' || categories.includes(selectedFilter);
+                card.hidden = !isVisible;
+                if (isVisible) visibleCount += 1;
+            });
+
+            if (emptyRepositoryMessage) {
+                emptyRepositoryMessage.hidden = visibleCount !== 0;
+            }
+        });
+    });
+
+    if (window.location.hash) {
+        window.addEventListener('load', () => {
+            const target = document.querySelector(window.location.hash);
+            target?.scrollIntoView({ block: 'start', behavior: 'auto' });
+        }, { once: true });
     }
 })();
